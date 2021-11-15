@@ -1,0 +1,21 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.fail{
+  color: red;
+  font-weight: bold;
+}
+.pass{
+  color: green;
+  font-weight: bold;
+}
+
+.google{
+  margin-left: 1rem
+}
