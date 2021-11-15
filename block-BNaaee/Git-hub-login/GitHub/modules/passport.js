@@ -2,6 +2,7 @@ var passport=require('passport');
 var User=require('../model/user');
 require('dotenv').config()
 var GitHubStrategy=require('passport-github').Strategy
+var GoogleStrategy=require('passport-google-oauth2').Strategy
 passport.use(new GitHubStrategy({
 
     clientID:process.env.CLIENT_ID,
@@ -34,8 +35,43 @@ User.findOne({email:profile._json.email},(err,user)=>{
 
 }))
 
+
+
+//google authentication
+passport.use(new GoogleStrategy({
+
+    clientID:process.env.google_CLIENT_ID,
+    clientSecret:process.env.google_CLIENT_SECRET,
+    callbackURL:'/auth/google/callback',
+    
+},(accessToken,refreshToken,profile,done)=>{
+console.log(profile);
+var profileData={
+    name:profile.displayName,
+    email:profile._json.email,
+    photo:profile._json.picture,
+}
+User.findOne({email:profile._json.email},(err,user)=>{
+    if(err)return done(err);
+    if(!user){
+        
+        User.create(profileData,(err,addedUser)=>{
+            console.log('in error',err);
+            if(err)return done(err);
+            // console.log('inside create');
+            // console.log(addedUser);
+            return done(null,addedUser);
+        })
+    }
+    done(null,user);
+})
+
+
+
+}))
+
 passport.serializeUser((user,done)=>{
-    console.log(user);
+    console.log('in user',user);
     done(null,user.id);
     
 })
