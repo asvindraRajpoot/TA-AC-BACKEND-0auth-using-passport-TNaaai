@@ -4,7 +4,7 @@ var Schema=mongoose.Schema;
 var userSchema=new Schema({
     name:String,
     email:{type:String,unique:true},
-    username:{type:String,required:true,unique:true},
+   // username:{type:String,required:true,unique:true},
     photo:{type:String}
 },{timestamps:true})
 
